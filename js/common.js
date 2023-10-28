@@ -222,22 +222,28 @@ let common = {
             last_login: gv('last_login'),
             offset: global.offset
         };
+        let isValid = true
+        let location = {dpt: 'user', act: 'edit_update'};
         if (user_id !== 0) {
             const property = Object.keys(data);
+            if (/[A-Za-z]/.test(data.phone)) {
+                isValid = false
+            }
             property.forEach((prop) => {
                 if (prop !== 'plot_id' && prop !== 'offset' && prop !== 'last_login') {
                     if (data[prop] === null || data[prop] === '') {
-                        return null
+                        isValid = false
                     }
                 }
             })
         }
-        let location = {dpt: 'user', act: 'edit_update'};
         // call
-        request({location: location, data: data}, (result) => {
-            common.modal_hide();
-            html('table', result.html);
-        });
+        if (isValid) {
+            request({location: location, data: data}, (result) => {
+                common.modal_hide();
+                html('table', result.html);
+            });
+        }
     },
 
 
