@@ -123,14 +123,15 @@ class User
     {
         // vars
         $user_id = isset($d['user_id']) && is_numeric($d['user_id']) ? $d['user_id'] : 0;
-//        $first_name = isset($d['first_name']) && in_array($d['billing'], [0, 1]) ? $d['billing'] : 0;
         $first_name = isset($d['first_name']) && trim($d['first_name']) ? trim($d['first_name']) : '';
         $last_name = isset($d['last_name']) && trim($d['last_name']) ? trim($d['last_name']) : '';
         $phone = isset($d['phone']) ? preg_replace('~\D+~', '', $d['phone']) : 0;
         $email = isset($d['email']) && trim( $d['email']) ? trim( $d['email']) : 0;
         $offset = isset($d['offset']) ? preg_replace('~\D+~', '', $d['offset']) : 0;
         $plots = $d['plot_id'] ?? 0;
-
+        $village_id = 1;
+        $access = 1;
+        $phone_code = 1111;
         // update
         if ($user_id) {
             $set = [];
@@ -149,14 +150,18 @@ class User
                 phone,
                 email,
                 plot_id,
-                updated
+                village_id,
+                access,
+                phone_code
             ) VALUES (
                 '" . $first_name . "',
                 '" . $last_name . "',
                 '" . $phone . "',
                 '" . $email . "',
                 '" . $plots . "',
-                '" . Session::$ts . "'
+                '" . $village_id . "',
+                '" . $access . "',
+                '" . $phone_code . "'
             );") or die (DB::error());
         }
         // output
